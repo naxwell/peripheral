@@ -1,10 +1,31 @@
+/*
+ *         _  __ 
+ *        (_)/ _|
+ *    __ _ _| |_ 
+ *   / _` | |  _|
+ *  | (_| | | | 
+ *   \__. |_|_|             _
+ *    __/ | |              | |    
+ *   |___/| | ___ __   ___ | |__  
+ *        | |/ / '_ \ / _ \| '_ \ 
+ *        |   <| | | | (_) | |_) |
+ *        |_|\_\_| |_|\___/|_.__/ 
+ *            by N Maxwell Lander
+ *
+ *  Made for Creation & Computation - Digital Futures, OCAD University
+ *
+ *  It's inportant to notw the potentiometer input has been mapped to give a value between 1 and 10 on the Feather
+ */
+
+
 var images
 var imgNumber
 var num = 1;
 var bit = "assets/bit" + "00" + num + ".jpg"; 
 var img3
 var serial;          // variable to hold an instance of the serialport library
-var portName = '/dev/ttyACM0';  // fill in your serial port name here
+//var portName = '/dev/ttyACM0';  // Ubuntu serial port
+var portName = '/dev/cu.usbmodem1411';  // macbook serial port
 var inData;                             // for incoming serial data
 
 
@@ -28,10 +49,11 @@ function setup()
 
 function draw() 
 {
-  //text("sensor value: " + inData, 30, 30);
-  loadImage(bit, function(img) {
+  //text("sensor value: " + inData, 30, 30); 
+  loadImage(bit, function(img) {   //loads image into the canvas based on the current status of "bit" (defined by potentiometer input below)
     image(img, 0, 0);
   });
+  
   if (inData != 5){
     gifIt();
   }
@@ -44,26 +66,29 @@ function draw()
     keyPressed();
 }*/
 
+
+// Moves the images back and forth based on Potentiometer input
 function gifIt() {
-  if (inData > 5){
-    if(num > 98) {
+  if (inData > 5){         //advances the file forward if the potentiometer is in a "forward" position
+    if(num > 98) {         //when it reaches the final image, rolls over to first image 
         num = 1; 
       } else {
         num ++
       }
   
-  } else if (inData < 5) {
-      if (num < 2) {
+  } else if (inData < 5) {  //cycles backwards through images if the potentiometer is in a "backwards" position
+      if (num < 2) {        // when the first image is reached, rolls over to the last image
         num = 99;
       } else { 
       num --
       }
       }
-  if (0 < num && num < 9){
+  
+  if (0 < num && num < 9){                  //sets filename for files ending between 1 and 9
  bit = "assets/bit" + "00" + num + ".jpg";
   }
   
-  if (9 < num && num < 99) {
+  if (9 < num && num < 99) {                //sets filename for  files ending between 10 and 99
     bit = "assets/bit" + "0" + num + ".jpg";
   }
 }
