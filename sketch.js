@@ -6,18 +6,14 @@ var img3
 
 function preload()
 {
-  // load images
- // img1 = loadImage("assets/bit000.jpg");
-  //img2 = loadImage("assets/bit095.jpg");
+
 }
 
 function setup() 
 {
   createCanvas(window.innerWidth, window.innerHeight);
-  //images = [img1, img2]; 
   imgNumber = random([0,1,]); 
-  //img3 = loadImage(bit);
-  //num = 1;  
+ 
   
 }
 
@@ -28,8 +24,11 @@ function draw()
     image(img, 0, 0);
   });
   
-  //image(img3, 0, 0); 
-  //image(images[imgNumber],0,0)
+  if (keyIsDown(UP_ARROW)) {
+    keyPressed();
+  }
+  if (keyIsDown(DOWN_ARROW)) 
+    keyPressed();
 }
 
 
@@ -57,9 +56,6 @@ function keyPressed() {
   if (9 < num && num < 99) {
     bit = "assets/bit" + "0" + num + ".jpg";
   }
-  
- 
-  
   
   
   console.log(bit);
