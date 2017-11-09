@@ -14,7 +14,7 @@
  *
  *  Made for Creation & Computation - Digital Futures, OCAD University
  *
- *  It's inportant to notw the potentiometer input has been mapped to give a value between 1 and 10 on the Feather
+ *  It's inportant to note the potentiometer input has been mapped to give a value between 1 and 10 on the Feather
  */
 
 
@@ -26,8 +26,9 @@ var img3
 var serial;          // variable to hold an instance of the serialport library
 //var portName = '/dev/ttyACM0';  // Ubuntu serial port
 var portName = '/dev/cu.usbmodem1411';  // macbook serial port
-var inData;                             // for incoming serial data
-
+var inData; // for incoming serial data
+var frame
+var frame2
 
 function setup() 
 {
@@ -42,47 +43,53 @@ function setup()
   serial.open(portName);              // open a serial port
   createCanvas(window.innerWidth, window.innerHeight);
   imgNumber = random([0,1,]); 
- 
   
 }
 
 
 function draw() 
 {
-  //text("sensor value: " + inData, 30, 30); 
   loadImage(bit, function(img) {   //loads image into the canvas based on the current status of "bit" (defined by potentiometer input below)
-    image(img, 0, 0);
+    image(img, 0, 0, windowWidth, windowHeight); //stretches image to fullscreen
   });
   
   if (inData != 5){
     gifIt();
   }
+  console.log(frameRate());
+  
 }
-  // initial movement through images via arrow press
-  /*if (keyIsDown(UP_ARROW)) {
-    keyPressed();
-  }
-  if (keyIsDown(DOWN_ARROW)) 
-    keyPressed();
-}*/
-
 
 // Moves the images back and forth based on Potentiometer input
 function gifIt() {
-  if (inData > 5){         //advances the file forward if the potentiometer is in a "forward" position
+  if (inData > 5 && inData < 7){         //advances the file forward if the potentiometer is in a "forward" position
     if(num > 98) {         //when it reaches the final image, rolls over to first image 
         num = 1; 
       } else {
-        num ++
+        num ++;
       }
   
-  } else if (inData < 5) {  //cycles backwards through images if the potentiometer is in a "backwards" position
+  } else if (inData < 5 && inData > 3) {  //cycles backwards through images if the potentiometer is in a "backwards" position
       if (num < 2) {        // when the first image is reached, rolls over to the last image
         num = 99;
       } else { 
-      num --
+      num --;
       }
+  } else if (inData < 3){
+      if(num < 2) {          //when it reaches the final image, rolls over to first image
+       num = 99;
+      } else { 
+        num --;
+        } 
+  }else if (inData > 7){
+      if(num > 98) {         //when it reaches the final image, rolls over to first image 
+        num = 1; 
+      } else {
+        num ++;
+        }
+   // frameRate(frame2);
       }
+  
   
   if (0 < num && num < 9){                  //sets filename for files ending between 1 and 9
  bit = "assets/bit" + "00" + num + ".jpg";
@@ -93,38 +100,12 @@ function gifIt() {
   }
 }
 
-/*function keyPressed() {
-  if (keyCode === UP_ARROW) { 
-      if(num > 98) {
-        num = 1; 
-      } else {
-        num ++
-      }
-  
-  } else if (keyCode === DOWN_ARROW) {
-      if (num < 2) {
-        num = 99;
-      } else { 
-      num --
-      }
-      }
-  
-  if (0 < num && num < 9){
- bit = "assets/bit" + "00" + num + ".jpg";
-  }
-  
-  if (9 < num && num < 99) {
-    bit = "assets/bit" + "0" + num + ".jpg";
-  }
-  
-  
-  console.log(bit);
-  console.log(num);
-}*/
 
 function serialEvent() {
   inData = Number(serial.read());
   //console.log (inData);
+  frame = Math.abs(map(inData,0,10,-5,5));
+  frameRate(frame*10);
 }
 
 function serverConnected() {
