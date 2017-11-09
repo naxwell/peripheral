@@ -90,7 +90,7 @@ function gifIt() {
     bit = "assets/bit" + "0" + num + ".jpg";
   }
 
-  if (100 < num) {
+  if (100 < num) {                          //sets filename for  files ending between 100 and 999
     bit = "assets/bit" + num + ".jpg";
   }
 }
@@ -98,10 +98,10 @@ function gifIt() {
 
 
 function serialEvent() {
-  inData = Number(serial.read());
+  inData = Number(serial.read()); //created variable for serial port reading
   //console.log (inData);
-  frame = Math.abs(map(inData,0,10,-5,5));
-  frameRate(frame*10);
+  frame = Math.abs(map(inData,0,10,-5,5)); //converts the data from the potentiometer to a absolute number between 1 and 5 in each direction
+  frameRate(frame*10); //makes frameRate relative to angle of potentiometer
 }
 
 function serverConnected() {
