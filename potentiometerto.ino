@@ -5,6 +5,6 @@ void setup() {
 void loop() {
  int potentiometer = analogRead(A0);                  // read the input pin
  int mappedPot = map(potentiometer, 0, 1023, 0, 10); // remap the pot value to fit in 1 byte
- Serial.println(mappedPot);                             // print it out the serial port
+ Serial.write(mappedPot);                             // print it out the serial port
  delay(1);                                            // slight delay to stabilize the ADC
 }
